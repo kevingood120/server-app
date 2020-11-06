@@ -12,10 +12,10 @@ export default class Task implements ITask {
     @Generated('uuid')
     @IsUUID()
     @IsOptional()
-    @Validate(ExistsByIdConstraint, [Task])
+    @Validate(ExistsByIdConstraint)
     id?: string;
 
-    @Validate(UniqueConstraint, [Task])
+    @Validate(UniqueConstraint)
     @IsNotEmpty()
     @IsString()
     @Column({ type: 'varchar', length: 100})

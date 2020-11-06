@@ -10,9 +10,10 @@ import { BrandModule } from './brand/brand.module';
 import { UserModule } from './user/user.module';
 import { TaskModule } from './task/task.module';
 import { EquipmentModule } from './equipment/equipment.module';
+import { ProductGroupModule } from './product-group/product-group.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), CustomerModule, AddressModule, ProductModule, BrandModule, UserModule, TaskModule, EquipmentModule],
+  imports: [TypeOrmModule.forRoot(), CustomerModule, AddressModule, ProductModule, BrandModule, UserModule, TaskModule, EquipmentModule, ProductGroupModule],
   controllers: [AppController],
   providers: [AppService],
 })

@@ -38,7 +38,8 @@ export interface IProduct {
     stock: number
     minStock: number
     unit: number
-    brand?: IBrand
+    brand: IBrand
+    productGroup: IProductGroup
     purchasePrice: Decimal
     salePrice: Decimal
     readonly createdAt: Date
@@ -88,5 +89,9 @@ export interface IEquipment {
     desc: string
     model: string
     brand: IBrand
+}
 
+export interface IProductGroup {
+    id?: string
+    desc: string
 }

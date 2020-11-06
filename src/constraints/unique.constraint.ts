@@ -1,24 +1,36 @@
 import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from "class-validator";
 import { getConnection, Repository } from "typeorm";
+import {
+    get,
+    set
+} from 'lodash'
 
 @ValidatorConstraint({name: 'unique', async: true})
 export class UniqueConstraint implements ValidatorConstraintInterface {
 
     async validate(value: any, args: ValidationArguments) {
-        const { id } = args.object as any
-        const { property } = args
-        const [entity] = args.constraints
-        const repo: Repository<typeof entity> = (await getConnection()).getRepository(entity)
+        const obj = args.object as any
+        const { id } = obj
+
+        let where = { 
+            [args.property]: args.value
+        }
+
+        if(args.constraints && args.constraints.length) 
+            args.constraints.forEach(property => set(where, property, get(obj, property)))
+
+        
+
+        const repo: Repository<any> = (await getConnection()).getRepository(args.targetName)
         const newEntity = await repo.findOne({
-            where: {
-                [property]: value
-            }
+            where,
+            loadRelationIds: true
         })
 
         return !(newEntity && newEntity.id !== id)
     }
 
     defaultMessage(args: ValidationArguments) {
-        return `${args.property} exists in db`
+        return `${args.constraints || args.property} exists in db`
     }
 }

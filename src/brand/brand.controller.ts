@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Inject, Post } from '@nestjs/common';
-import { IBrand } from 'src/interfaces';
+import Brand from './brand.entity';
 import { BrandService } from './brand.service';
 
 @Controller('brand')
@@ -14,7 +14,7 @@ export class BrandController {
     }
 
     @Post()
-    async add(@Body() brand: IBrand) {
+    async add(@Body() brand: Brand) {
         return await this.brandService.add(brand)
     }
 }

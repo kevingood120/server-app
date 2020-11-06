@@ -10,10 +10,10 @@ export default class Address implements IAddress {
     @Generated('uuid')
     @IsUUID()
     @IsOptional()
-    @Validate(ExistsByIdConstraint, [Address])
+    @Validate(ExistsByIdConstraint)
     id!: string
 
-    @Validate(UniqueConstraint, [Address])
+    @Validate(UniqueConstraint)
     @Matches(/\d{5}-\d{3}/)
     @Column({type: 'char', length: 9, unique: true})
     zipcode: string

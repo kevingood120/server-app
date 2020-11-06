@@ -31,7 +31,7 @@ export class ProductService {
                 desc: Like(`%${desc ?? ''}%`),
                 ...rest
             },
-            relations: ['brand']
+            relations: ['brand', 'productGroup']
         })
 
         return {

@@ -1,6 +1,7 @@
 import { IsNotEmpty, IsNotEmptyObject, IsObject, IsOptional, IsUUID, MaxLength, Validate, ValidateNested } from "class-validator";
 import Brand from "src/brand/brand.entity";
 import { ExistsByIdConstraint } from "src/constraints/existsbyid.constraint";
+import { UniqueConstraint } from "src/constraints/unique.constraint";
 import { IBrand, IEquipment } from "src/interfaces";
 import { Column, Entity, Generated, JoinColumn, ManyToOne, PrimaryColumn, Unique } from "typeorm";
 
@@ -12,7 +13,7 @@ export default class Equipment implements IEquipment {
     @Generated('uuid')
     @IsUUID()
     @IsOptional()
-    @Validate(ExistsByIdConstraint, [Equipment])
+    @Validate(ExistsByIdConstraint)
     id?: string;
 
     @Column({ type: 'varchar', length: 200})
@@ -22,6 +23,7 @@ export default class Equipment implements IEquipment {
 
     @Column({ type: 'varchar', length: 200})
     @IsNotEmpty()
+    @Validate(UniqueConstraint, ['model', 'brand.id'])
     @MaxLength(200)
     model: string;
 
@@ -30,6 +32,6 @@ export default class Equipment implements IEquipment {
     @IsObject()
     @IsNotEmptyObject()
     @ValidateNested()
-    brand: Brand;
+    brand: IBrand;
     
 }

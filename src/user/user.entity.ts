@@ -10,7 +10,7 @@ export default class User implements IUser {
     @Generated('uuid')
     @IsUUID()
     @IsOptional()
-    @Validate(ExistsByIdConstraint, [User])
+    @Validate(ExistsByIdConstraint)
     id?: string;
 
     @Column({ type: 'varchar', length: 100})
@@ -23,7 +23,7 @@ export default class User implements IUser {
     @MaxLength(30)
     @IsString()
     @IsNotEmpty()
-    @Validate(UniqueConstraint, [User])
+    @Validate(UniqueConstraint)
     username: string;
 
     @Column({ type: 'varchar', length: 36})

@@ -3,9 +3,8 @@ import Address from "src/address/address.entity"
 import { IsEmail, IsNotEmpty, IsNotEmptyObject, IsObject, IsOptional, IsString, IsUUID, Matches, Max, MaxLength, Validate, ValidateNested } from "class-validator"
 import { UniqueConstraint } from "src/constraints/unique.constraint"
 import { CpfConstraint } from "src/constraints/cpf.constraint"
-import { CustomerAddress } from "./customer.validations"
 import { ExistsByIdConstraint } from "src/constraints/existsbyid.constraint"
-import { ICustomer } from "src/interfaces"
+import { IAddress, ICustomer } from "src/interfaces"
 
 @Entity()
 export default class Customer implements ICustomer {
@@ -14,7 +13,7 @@ export default class Customer implements ICustomer {
     @Generated('uuid')
     @IsUUID()
     @IsOptional()
-    @Validate(ExistsByIdConstraint, [Customer])
+    @Validate(ExistsByIdConstraint)
     id!: string
 
     @IsNotEmpty()
@@ -37,14 +36,14 @@ export default class Customer implements ICustomer {
 
     @Matches(/\d{3}.\d{3}.\d{3}-\d{2}/)
     @IsNotEmpty()
-    @Validate(UniqueConstraint, [Customer])
+    @Validate(UniqueConstraint)
     @Validate(CpfConstraint)
     @Column({type: 'varchar', length: 14, unique: true})
     cpf: string
 
     @IsNotEmpty()
     @IsEmail()
-    @Validate(UniqueConstraint, [Customer])
+    @Validate(UniqueConstraint)
     @Column({type: 'varchar', length: 200})
     email: string
 
@@ -63,8 +62,8 @@ export default class Customer implements ICustomer {
     @JoinColumn()
     @IsObject()
     @IsNotEmptyObject()
-    @ValidateNested()
-    address: CustomerAddress
+    @Validate(ExistsByIdConstraint, ['address'])
+    address: IAddress
 
     @CreateDateColumn({
         insert: true
